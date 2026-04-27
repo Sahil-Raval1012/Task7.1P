@@ -1,4 +1,5 @@
 package com.example.lostandfound
+
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -83,14 +84,16 @@ class CreateAdvertActivity : AppCompatActivity() {
             .setNegativeButton(R.string.cancel, null)
             .show()
     }
+
     private fun showSampleChooser() {
         val labels = arrayOf(
-            getString(R.string.sample_wallet),
             getString(R.string.sample_keys),
-            getString(R.string.sample_phone)
+
         )
         val resIds = intArrayOf(
+
             R.drawable.sample_keys,
+
         )
         AlertDialog.Builder(this)
             .setTitle(R.string.image_from_sample)
@@ -115,6 +118,7 @@ class CreateAdvertActivity : AppCompatActivity() {
                 drawable.draw(canvas)
                 out
             }
+
             val dir = File(filesDir, "images").apply { if (!exists()) mkdirs() }
             val file = File(dir, "img_${System.currentTimeMillis()}.jpg")
             FileOutputStream(file).use { out ->
@@ -127,6 +131,7 @@ class CreateAdvertActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.image_error), Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun launchCamera() {
         try {
             val dir = File(filesDir, "images").apply { if (!exists()) mkdirs() }
@@ -155,6 +160,7 @@ class CreateAdvertActivity : AppCompatActivity() {
             cal.get(Calendar.DAY_OF_MONTH)
         ).show()
     }
+
     private fun saveImageLocally(uri: Uri) {
         try {
             val dir = File(filesDir, "images").apply { if (!exists()) mkdirs() }
@@ -169,6 +175,7 @@ class CreateAdvertActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.image_error), Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun saveItem() {
         val postType = if (binding.radioLost.isChecked) "Lost" else "Found"
         val name = binding.editName.text.toString().trim()
@@ -177,16 +184,19 @@ class CreateAdvertActivity : AppCompatActivity() {
         val date = binding.editDate.text.toString().trim()
         val location = binding.editLocation.text.toString().trim()
         val category = binding.spinnerCategory.selectedItem?.toString() ?: "Other"
+
         if (name.isEmpty() || phone.isEmpty() || description.isEmpty() ||
             date.isEmpty() || location.isEmpty()
         ) {
             Toast.makeText(this, getString(R.string.fill_all_fields), Toast.LENGTH_SHORT).show()
             return
         }
+
         if (imagePath.isNullOrEmpty()) {
             Toast.makeText(this, getString(R.string.image_required), Toast.LENGTH_SHORT).show()
             return
         }
+
         val createdAt = System.currentTimeMillis()
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
         val item = Item(
@@ -200,6 +210,7 @@ class CreateAdvertActivity : AppCompatActivity() {
             imagePath = imagePath,
             createdAt = createdAt
         )
+
         val id = DatabaseHelper(this).insertItem(item)
         if (id > 0) {
             Toast.makeText(
